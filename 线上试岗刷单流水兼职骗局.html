@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ff7043'/%3E%3Cstop offset='1' stop-color='%23c62828'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M32 4 L58 14 V32 C58 46 48 56 32 60 C16 56 6 46 6 32 V14 Z' fill='url(%23g)' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M32 18 L32 40' stroke='%23fff' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='48' r='3.5' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ff7043'/%3E%3Cstop offset='1' stop-color='%23c62828'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M32 4 L58 14 V32 C58 46 48 56 32 60 C16 56 6 46 6 32 V14 Z' fill='url(%23g)' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M32 18 L32 40' stroke='%23fff' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='48' r='3.5' fill='%23fff'/%3E%3C/svg%3E">
+<title>🛡️ 线上试岗刷单流水兼职骗局 · 反诈交互剧本（加强版）</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;font-family:"Microsoft YaHei","PingFang SC","Helvetica Neue",sans-serif;}
+  body{
+    background:linear-gradient(135deg,#0a2540 0%,#1a4d6e 50%,#0d5c5c 100%);
+    display:flex;align-items:center;justify-content:center;min-height:100vh;padding:12px;
+    color:#222;
+  }
+  /* ===== 手机外壳 ===== */
+  .phone{
+    width:430px;max-width:100%;height:min(800px,94vh);
+    background:#f3f0ea;border-radius:34px;
+    box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 10px #1c1c1c,0 0 0 12px #2a2a2a;
+    display:flex;flex-direction:column;overflow:hidden;position:relative;
+  }
+  /* 顶部状态条 */
+  .topbar{
+    background:linear-gradient(180deg,#1f3a5f,#15263d);
+    color:#fff;padding:14px 16px 12px;display:flex;align-items:center;gap:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);position:relative;z-index:5;
+    transition:background .4s;
+  }
+  .topbar .avatar{
+    width:42px;height:42px;border-radius:50%;
+    background:linear-gradient(135deg,#ff8a65,#e53935);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    border:2px solid rgba(255,255,255,.25);
+    transition:background .4s;
+  }
+  .topbar .avatar svg{width:26px;height:26px;}
+  .topbar.conv-police{background:linear-gradient(180deg,#0d3d7a,#092a55);}
+  .topbar.conv-police .avatar{background:linear-gradient(135deg,#42a5f5,#1565c0);}
+  .topbar.conv-group{background:linear-gradient(180deg,#33524a,#20362f);}
+  .topbar.conv-group .avatar{background:linear-gradient(135deg,#26a69a,#00695c);}
+  .topbar .info{flex:1;min-width:0;}
+  .topbar .name{font-size:15px;font-weight:bold;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .topbar .sub{font-size:11px;color:#9fb3c8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .badge{color:#fff;font-size:9px;padding:1px 5px;border-radius:6px;font-weight:normal;flex-shrink:0;}
+  .badge.bd-green{background:#4caf50;}
+  .badge.bd-blue{background:#1e88e5;}
+  .badge.bd-org{background:#fb8c00;}
+  .badge.bd-gray{background:#78909c;}
+  .moneybox{
+    background:rgba(0,0,0,.28);border-radius:10px;padding:6px 10px;text-align:center;min-width:88px;
+    border:1px solid rgba(255,255,255,.1);flex-shrink:0;
+  }
+  .moneybox .lbl{font-size:9px;color:#9fb3c8;letter-spacing:1px;}
+  .moneybox .val{font-size:15px;font-weight:bold;color:#ffd54f;font-family:"Courier New",monospace;}
+  .moneybox .val.neg{color:#ff5252;}
+  .moneybox .val.pos{color:#69f0ae;}
+
+  /* ===== 聊天区（三会话） ===== */
+  .chat{flex:1;display:none;overflow-y:auto;padding:14px 12px 20px;scroll-behavior:smooth;
+    background:linear-gradient(180deg,rgba(243,240,234,.96),rgba(243,240,234,.99));
+  }
+  .chat.on{display:block;}
+  #chat-group{background:linear-gradient(180deg,#f5f1e8,#efe9db);}
+  #chat-scam{background:linear-gradient(180deg,#f6f4f0,#f1ede5);}
+  #chat-police{background:linear-gradient(180deg,#ecf3fb,#e2ecf8);}
+  .chat::-webkit-scrollbar{width:4px;}
+  .chat::-webkit-scrollbar-thumb{background:rgba(0,0,0,.2);border-radius:2px;}
+
+  .row{display:flex;gap:8px;margin-bottom:12px;align-items:flex-start;animation:popin .32s ease both;}
+  .row.right{flex-direction:row-reverse;}
+  @keyframes popin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .av{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;color:#fff;box-shadow:0 2px 5px rgba(0,0,0,.15),inset 0 0 0 1.5px rgba(255,255,255,.25);}
+  .av svg{width:20px;height:20px;}
+  .av.ai{background:linear-gradient(135deg,#ff8a65,#e53935);}
+  .av.police{background:linear-gradient(135deg,#42a5f5,#1565c0);}
+  .av.me{background:linear-gradient(135deg,#4dd0e1,#0288d1);}
+
+  .bubble{
+    max-width:75%;padding:9px 12px;border-radius:14px;font-size:13.5px;line-height:1.55;
+    word-break:break-word;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.08);
+  }
+  .bubble.ai{background:#fff;color:#222;border-top-left-radius:4px;}
+  .bubble.me{background:linear-gradient(135deg,#66bb6a,#43a047);color:#fff;border-top-right-radius:4px;box-shadow:0 2px 6px rgba(67,160,71,.25);}
+  .bubble .time{display:block;font-size:9px;opacity:.55;margin-top:3px;text-align:right;}
+
+  /* 群聊消息 */
+  .gav{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:14px;box-shadow:0 2px 5px rgba(0,0,0,.15),inset 0 0 0 1.5px rgba(255,255,255,.25);}
+  .gcol{max-width:80%;min-width:0;}
+  .gname{font-size:10px;margin-bottom:3px;letter-spacing:.5px;font-weight:bold;opacity:.9;}
+  .row.g .bubble{max-width:100%;}
+  .gsys{margin:8px auto;max-width:88%;text-align:center;font-size:10.5px;color:#8a8378;background:rgba(0,0,0,.05);border-radius:8px;padding:5px 10px;animation:popin .3s ease both;}
+
+  /* 心理 OS */
+  .os{
+    margin:8px auto;max-width:88%;background:linear-gradient(135deg,#ede7f6,#d1c4e9);
+    border:1px dashed #7e57c2;border-radius:12px;padding:9px 14px;font-size:12.5px;color:#4527a0;
+    line-height:1.55;position:relative;animation:popin .4s ease both;
+  }
+  .os::before{content:"💭 心理OS";display:block;font-size:10px;font-weight:bold;color:#7e57c2;margin-bottom:3px;letter-spacing:1px;}
+
+  /* 系统警示 */
+  .sys{
+    margin:10px auto;max-width:92%;border-radius:12px;padding:10px 14px;font-size:12.5px;line-height:1.55;
+    text-align:center;position:relative;animation:shakeIn .5s ease both;
+  }
+  .sys.warn{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:1.5px solid #fb8c00;color:#e65100;}
+  .sys.danger{background:linear-gradient(135deg,#ffebee,#ffcdd2);border:2px solid #c62828;color:#b71c1c;font-weight:bold;}
+  .sys.heavy{
+    background:linear-gradient(135deg,#3e0000,#7c0000);color:#fff;border:2px solid #ff5252;
+    font-weight:bold;box-shadow:0 0 18px rgba(255,82,82,.4);
+  }
+  .sys .ic{display:inline-block;width:18px;height:18px;vertical-align:middle;margin-right:6px;}
+  @keyframes shakeIn{0%{opacity:0;transform:translateY(-6px) scale(.96);}60%{transform:translateY(2px) scale(1.02);}100%{opacity:1;transform:none;}}
+
+  /* 旁白 */
+  .narrate{margin:10px auto;max-width:92%;text-align:center;font-size:12px;color:#666;line-height:1.6;
+    padding:8px 14px;background:rgba(0,0,0,.04);border-radius:10px;font-style:italic;}
+
+  /* 章节卡 */
+  .chapter{
+    margin:16px auto 12px;max-width:92%;text-align:center;font-size:13.5px;font-weight:bold;
+    color:#134e6f;letter-spacing:2px;padding:10px 8px;animation:popin .45s ease both;position:relative;
+  }
+  .chapter::before,.chapter::after{content:"———";color:#a8bfce;margin:0 8px;font-weight:normal;letter-spacing:0;}
+
+  /* 招聘广告卡 */
+  .jobad{
+    margin:10px auto;max-width:92%;background:linear-gradient(135deg,#fffde7,#fff9c4);
+    border:1.5px solid #fbc02d;border-radius:12px;padding:12px 14px;font-size:13px;color:#33281a;
+    line-height:1.6;box-shadow:0 3px 8px rgba(251,192,45,.25);position:relative;
+  }
+  .jobad .tag{display:inline-block;background:#ff6f00;color:#fff;font-size:10px;padding:2px 7px;border-radius:6px;margin-bottom:6px;font-weight:bold;}
+  .jobad .title{font-weight:bold;font-size:14px;margin-bottom:4px;color:#e65100;}
+  .jobad .feat{font-size:11px;color:#795548;margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;}
+  .jobad .feat span{background:rgba(230,81,0,.1);padding:2px 6px;border-radius:5px;}
+
+  /* 国家反诈中心 APP 弹窗 */
+  .appalert{
+    margin:10px auto;max-width:86%;background:linear-gradient(135deg,#e8f1fd,#d6e7fb);
+    border:1.5px solid #1e6fd0;border-radius:14px;padding:12px 16px;text-align:center;
+    box-shadow:0 4px 14px rgba(30,111,208,.25);animation:shakeIn .5s ease both;
+  }
+  .appalert .app-ic{font-size:26px;display:block;}
+  .appalert .app-name{font-size:13px;font-weight:bold;color:#0d47a1;margin:3px 0 6px;letter-spacing:1px;}
+  .appalert .app-body{font-size:12px;color:#1a4d8f;line-height:1.65;white-space:pre-line;}
+
+  /* 资金动作 */
+  .pay{
+    margin:10px auto;max-width:80%;background:linear-gradient(135deg,#fff,#ffe0e0);
+    border:1.5px dashed #c62828;border-radius:12px;padding:10px 14px;text-align:center;
+    font-size:12.5px;color:#b71c1c;line-height:1.5;animation:popin .4s ease both;
+  }
+  .pay .amt{font-size:18px;font-weight:bold;font-family:"Courier New",monospace;margin:4px 0;display:block;}
+  .pay .amt.in{color:#2e7d32;}
+  .pay .amt.out{color:#c62828;}
+  .pay .arrow{font-size:14px;color:#999;margin:2px 0;}
+
+  /* 打字指示 */
+  .typing{display:flex;gap:4px;padding:10px 14px;}
+  .typing span{width:7px;height:7px;background:#bbb;border-radius:50%;animation:blink 1.2s infinite both;}
+  .typing span:nth-child(2){animation-delay:.2s;}
+  .typing span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,60%,100%{opacity:.3;transform:translateY(0);}30%{opacity:1;transform:translateY(-3px);}}
+
+  /* ===== 选择区 ===== */
+  .choices{
+    padding:10px 12px 14px;background:linear-gradient(180deg,#fff,#f3f0ea);
+    border-top:1px solid #e0d8cc;display:flex;flex-direction:column;gap:8px;min-height:78px;
+    justify-content:center;box-shadow:0 -4px 12px rgba(0,0,0,.06);position:relative;z-index:6;
+  }
+  .choices .prompt{font-size:11px;color:#888;text-align:center;margin-bottom:2px;letter-spacing:1px;}
+  .choice{
+    width:100%;padding:11px 14px;border:none;border-radius:11px;font-size:13.5px;font-weight:bold;
+    cursor:pointer;transition:all .18s;font-family:inherit;line-height:1.4;text-align:left;
+    display:flex;align-items:center;gap:8px;animation:popin .3s ease both;
+  }
+  .choice+.choice{animation-delay:.09s;}
+  .choice .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;opacity:.7;}
+  .choice.risk{background:linear-gradient(135deg,#fff3e0,#ffe0b2);color:#bf360c;border:1.5px solid #fb8c00;}
+  .choice.risk:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(251,140,0,.3);}
+  .choice.safe{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);color:#1b5e20;border:1.5px solid #43a047;}
+  .choice.safe:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(67,160,71,.3);}
+  .choice.danger{background:linear-gradient(135deg,#ffebee,#ffcdd2);color:#b71c1c;border:1.5px solid #e53935;}
+  .choice.danger:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(229,57,53,.35);}
+  .choice:active{transform:scale(.98);}
+  .choices.hide{display:none;}
+
+  /* ===== 来电弹窗 ===== */
+  .call{
+    position:absolute;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+    background:rgba(4,12,24,.78);opacity:0;pointer-events:none;transition:opacity .3s;
+  }
+  .call.show{opacity:1;pointer-events:auto;}
+  .call-card{
+    width:80%;background:linear-gradient(160deg,#12315e,#0b1f3d);border-radius:26px;
+    padding:28px 22px;text-align:center;color:#fff;box-shadow:0 20px 50px rgba(0,0,0,.6);
+    transform:translateY(16px);transition:transform .35s;
+  }
+  .call.show .call-card{transform:none;}
+  .call-av{
+    width:80px;height:80px;margin:0 auto 12px;border-radius:50%;
+    background:linear-gradient(135deg,#42a5f5,#1565c0);
+    display:flex;align-items:center;justify-content:center;font-size:36px;
+    animation:ringPulse 1.1s ease-in-out infinite;
+  }
+  @keyframes ringPulse{0%,100%{box-shadow:0 0 0 0 rgba(66,165,245,.55);}50%{box-shadow:0 0 0 18px rgba(66,165,245,0);}}
+  .call-name{font-size:18px;font-weight:bold;letter-spacing:1px;}
+  .call-sub{font-size:11px;color:#9fc1ea;margin-top:4px;}
+  .call-status{font-size:12px;color:#ffd54f;margin:14px 0 18px;letter-spacing:1px;}
+  .call-btns{display:flex;justify-content:center;gap:30px;}
+  .call-btns button{
+    width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:transform .15s;
+  }
+  .call-btns button b{font-size:17px;font-weight:normal;line-height:1;}
+  .call-btns button i{font-style:normal;font-size:9px;opacity:.9;}
+  .call-btns button:active{transform:scale(.9);}
+  .c-refuse{background:linear-gradient(135deg,#ef5350,#c62828);}
+  .c-answer{background:linear-gradient(135deg,#66bb6a,#2e7d32);}
+
+  /* 切换提示 toast */
+  .toast{
+    position:absolute;top:76px;left:50%;transform:translate(-50%,-10px);
+    background:rgba(20,30,45,.9);color:#fff;font-size:12px;padding:8px 16px;border-radius:20px;
+    z-index:70;opacity:0;pointer-events:none;transition:all .3s;letter-spacing:1px;white-space:nowrap;
+    box-shadow:0 6px 16px rgba(0,0,0,.3);
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+
+  /* ===== 结局遮罩 ===== */
+  .overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;
+    z-index:100;padding:20px;opacity:0;pointer-events:none;transition:opacity .4s;
+  }
+  .overlay.show{opacity:1;pointer-events:auto;}
+  .card{
+    background:#fff;border-radius:22px;padding:30px 26px;max-width:480px;width:100%;text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);transform:scale(.9);transition:transform .4s;
+    max-height:88vh;overflow-y:auto;
+  }
+  .overlay.show .card{transform:scale(1);}
+  .card::before{content:"";display:block;height:5px;border-radius:4px;margin:-12px -6px 18px;}
+  .card.fail::before{background:linear-gradient(90deg,#ff8a80,#e53935,#ff8a80);}
+  .card.win::before{background:linear-gradient(90deg,#a5d6a7,#43a047,#a5d6a7);}
+  .card .ic{font-size:54px;margin-bottom:8px;display:block;}
+  .card h2{font-size:24px;margin-bottom:14px;}
+  .card.fail h2{color:#c62828;}
+  .card.win h2{color:#2e7d32;}
+  .card .body{font-size:13.5px;line-height:1.7;color:#444;margin-bottom:18px;white-space:pre-line;}
+  .card .vol{
+    margin:-8px 0 14px;background:#fff8e1;border:1px dashed #f9a825;color:#7b5800;
+    font-size:12px;border-radius:8px;padding:8px 10px;line-height:1.6;
+  }
+  .card .summary{
+    background:#f5f5f5;border-left:4px solid #1a4d6e;border-radius:8px;padding:12px 14px;
+    text-align:left;font-size:12.5px;line-height:1.65;color:#333;margin-bottom:16px;white-space:pre-line;
+  }
+  .card .slogan{
+    background:linear-gradient(135deg,#1a4d6e,#0d5c5c);color:#fff;border-radius:10px;padding:14px;
+    font-size:14px;line-height:1.7;margin-bottom:18px;white-space:pre-line;font-weight:bold;letter-spacing:1px;
+  }
+  .card .btn{
+    background:linear-gradient(135deg,#1a4d6e,#0d5c5c);color:#fff;border:none;border-radius:11px;
+    padding:13px 28px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;transition:all .18s;
+  }
+  .card .btn:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(13,92,92,.4);}
+  .card .btn:active{transform:scale(.97);}
+
+  /* 片头标题屏 */
+  .title-screen{
+    position:absolute;inset:0;background:linear-gradient(160deg,#0a2540,#1a4d6e 60%,#0d5c5c);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#fff;padding:30px;text-align:center;z-index:50;overflow:hidden;
+  }
+  .title-screen::before{
+    content:"";position:absolute;width:340px;height:340px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,138,101,.18),transparent 65%);
+    top:-60px;right:-80px;animation:breathe 4s ease-in-out infinite;
+  }
+  .title-screen::after{
+    content:"";position:absolute;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(66,165,245,.16),transparent 65%);
+    bottom:-40px;left:-60px;animation:breathe 4s ease-in-out 2s infinite;
+  }
+  @keyframes breathe{0%,100%{transform:scale(1);opacity:.8;}50%{transform:scale(1.15);opacity:1;}}
+  .floats{position:absolute;inset:0;pointer-events:none;}
+  .floats span{position:absolute;font-size:22px;opacity:.35;animation:floatUp 7s linear infinite;}
+  .floats span:nth-child(1){left:8%;bottom:-8%;animation-delay:0s;}
+  .floats span:nth-child(2){left:24%;bottom:-8%;animation-delay:2.2s;font-size:17px;}
+  .floats span:nth-child(3){right:14%;bottom:-8%;animation-delay:1.1s;font-size:26px;}
+  .floats span:nth-child(4){right:34%;bottom:-8%;animation-delay:3.6s;font-size:15px;}
+  .floats span:nth-child(5){left:48%;bottom:-8%;animation-delay:4.8s;}
+  @keyframes floatUp{0%{transform:translateY(0) rotate(0);opacity:0;}12%{opacity:.4;}88%{opacity:.3;}100%{transform:translateY(-92vh) rotate(24deg);opacity:0;}}
+  .title-screen .tag{background:rgba(255,82,82,.2);border:1px solid #ff5252;color:#ffb0b0;
+    font-size:11px;padding:4px 12px;border-radius:14px;margin-bottom:18px;letter-spacing:2px;position:relative;z-index:1;}
+  .title-screen h1{font-size:26px;line-height:1.35;margin-bottom:12px;font-weight:bold;text-shadow:0 2px 10px rgba(0,0,0,.4);position:relative;z-index:1;}
+  .title-screen h1 .h{color:#ff8a65;}
+  .title-screen .desc{font-size:13px;color:#b0c4d8;line-height:1.7;margin-bottom:16px;max-width:310px;position:relative;z-index:1;}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:24px;position:relative;z-index:1;}
+  .chips span{font-size:10.5px;color:#cfe3f5;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);
+    padding:4px 10px;border-radius:12px;letter-spacing:1px;}
+  .title-screen .start{
+    background:linear-gradient(135deg,#ff8a65,#e53935);color:#fff;border:none;border-radius:25px;
+    padding:14px 46px;font-size:16px;font-weight:bold;cursor:pointer;font-family:inherit;
+    box-shadow:0 8px 20px rgba(229,57,53,.4);transition:all .2s;position:relative;z-index:1;
+  }
+  .title-screen .start:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(229,57,53,.5);}
+  .title-screen .start:active{transform:scale(.97);}
+  .title-screen .footer{position:absolute;bottom:18px;font-size:10px;color:#6a8aa8;letter-spacing:1px;z-index:1;}
+  .title-screen.hide{opacity:0;pointer-events:none;transition:opacity .5s;}
+
+  /* 结局闪烁 */
+  @keyframes flashRed{0%,100%{box-shadow:0 0 0 rgba(229,57,53,0);}50%{box-shadow:0 0 30px rgba(229,57,53,.6);}}
+  .flash-danger{animation:flashRed 1s ease;}
+  @keyframes glowGreen{0%,100%{box-shadow:0 0 0 rgba(67,160,71,0);}50%{box-shadow:0 0 30px rgba(67,160,71,.5);}}
+  .flash-success{animation:glowGreen 1.2s ease;}
+
+  @media (max-width:460px){
+    .phone{box-shadow:0 0 0 6px #1c1c1c;border-radius:18px;}
+    .bubble{font-size:13px;}
+  }
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <!-- 标题屏 -->
+  <div class="title-screen" id="titleScreen">
+    <div class="floats"><span>💰</span><span>📱</span><span>🛡️</span><span>⚠️</span><span>🏦</span></div>
+    <div class="tag">反诈交互剧本 · 加强版 · 比赛答辩</div>
+    <h1>线上试岗<span class="h">刷单流水</span>兼职骗局</h1>
+    <div class="desc">你扮演一名在校大学生，在兼职群刷到『电商数据助理·居家试岗』招聘……<br>警惕每一轮回马枪与二次诈骗，你的选择决定结局。</div>
+    <div class="chips">
+      <span>7 个互动选择</span><span>3 条故事线</span><span>回马枪 · 二次诈骗</span><span>96110 实景来电</span>
+    </div>
+    <button class="start" id="startBtn">开始体验</button>
+    <div class="footer">求职兼职零垫付 · 刷流水全是套路</div>
+  </div>
+
+  <!-- 顶部条 -->
+  <div class="topbar conv-group" id="topbar">
+    <div class="avatar" id="tbAv"></div>
+    <div class="info">
+      <div class="name" id="tbName"></div>
+      <div class="sub" id="tbSub"></div>
+    </div>
+    <div class="moneybox">
+      <div class="lbl">资金流水</div>
+      <div class="val pos" id="money">+0.00</div>
+    </div>
+  </div>
+
+  <!-- 聊天区：三会话 -->
+  <div class="chat on" id="chat-group"></div>
+  <div class="chat" id="chat-scam"></div>
+  <div class="chat" id="chat-police"></div>
+
+  <!-- 选择区 -->
+  <div class="choices hide" id="choices"></div>
+
+  <!-- 来电弹窗 -->
+  <div class="call" id="call">
+    <div class="call-card">
+      <div class="call-av">🛡️</div>
+      <div class="call-name" id="callName">反诈专线 96110</div>
+      <div class="call-sub" id="callSub">绿藤市公安局反诈中心</div>
+      <div class="call-status" id="callStatus">来电中…</div>
+      <div class="call-btns">
+        <button class="c-refuse" id="callNo"><b>✕</b><i>挂断</i></button>
+        <button class="c-answer" id="callYes"><b>📞</b><i>接听</i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 会话切换提示 -->
+  <div class="toast" id="toast"></div>
+</div>
+
+<!-- 结局遮罩 -->
+<div class="overlay" id="overlay">
+  <div class="card" id="endCard"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ============ 工具 ============
+  const $ = id=>document.getElementById(id);
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  const scrollDown=el=>{el.scrollTop=el.scrollHeight;};
+  const chatMap={group:$("chat-group"),scam:$("chat-scam"),police:$("chat-police")};
+  const choicesEl=$("choices"), moneyEl=$("money");
+  const overlay=$("overlay"), endCard=$("endCard");
+  const flags={};
+
+  // 头像
+  const AV={
+    tbScam:`<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="9" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/><path d="M19 4l3-2-1 3 2 1-3 1-1 3-1-3-3-1 3-1z" fill="#fff" stroke="none"/></svg>`,
+    tbPolice:`<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>`,
+    tbGroup:`<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><circle cx="17" cy="9" r="3"/><path d="M17 14.5c2.8.3 4.5 2.4 4.5 5.5"/></svg>`,
+    scam:`<div class="av ai"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4 4-7 8-7s8 3 8 7"/></svg></div>`,
+    police:`<div class="av police"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>`,
+    me:`<div class="av me"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-6 9 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg></div>`
+  };
+
+  // ============ 会话系统 ============
+  const CONVS={
+    group:{cls:"conv-group",av:AV.tbGroup,name:`大学生兼职互助群③ <span class="badge bd-gray">256人</span>`,sub:"已标记 12 个风险账号 · 谨慎辨别",toast:"大学生兼职互助群③"},
+    scam:{cls:"",av:AV.tbScam,name:`对接员·李老师 <span class="badge bd-org">在线</span>`,sub:"电商数据助理 · 居家线上试岗",toast:"对接员·李老师（涉诈风险）"},
+    police:{cls:"conv-police",av:AV.tbPolice,name:`反诈民警·王警官 <span class="badge bd-blue">反诈专线</span>`,sub:"96110 · 绿藤市公安局反诈中心",toast:"反诈民警·王警官（96110）"}
+  };
+  let conv="group";
+  function chatEl(){return chatMap[conv];}
+  function setTopbar(key){
+    const c=CONVS[key];
+    $("topbar").className="topbar "+c.cls;
+    $("tbAv").innerHTML=c.av;
+    $("tbName").innerHTML=c.name;
+    $("tbSub").textContent=c.sub;
+  }
+  let toastTimer=null;
+  function toast(msg){
+    const t=$("toast");t.textContent=msg;t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>t.classList.remove("show"),1700);
+  }
+  function switchConv(to){
+    if(to===conv)return;
+    conv=to;
+    for(const k in chatMap){chatMap[k].classList.toggle("on",k===to);}
+    setTopbar(to);
+    toast("已切换会话 · "+CONVS[to].toast);
+  }
+
+  // ============ 资金显示 ============
+  let money=0;
+  function updateMoney(delta){
+    money+=delta;
+    const v=money;
+    moneyEl.textContent=(v>=0?"+":"")+v.toFixed(2);
+    moneyEl.className="val "+(v>0?"pos":(v<0?"neg":""));
+    moneyEl.style.transition="transform .15s";
+    moneyEl.style.transform="scale(1.18)";
+    setTimeout(()=>{moneyEl.style.transform="scale(1)";},160);
+  }
+
+  // ============ 渲染 ============
+  function timeStr(){
+    const t=new Date();
+    return String(t.getHours()).padStart(2,"0")+":"+String(t.getMinutes()).padStart(2,"0");
+  }
+  function escapeHtml(s){
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");
+  }
+  function addChapter(text){
+    const d=document.createElement("div");
+    d.className="chapter";d.textContent=text;
+    chatEl().appendChild(d);scrollDown(chatEl());
+  }
+  function addNarrate(text){
+    const d=document.createElement("div");
+    d.className="narrate";d.textContent=text;
+    chatEl().appendChild(d);scrollDown(chatEl());
+  }
+  function addJobad(node){
+    const d=document.createElement("div");
+    d.className="jobad";
+    let featHtml="";
+    if(node.feat) featHtml='<div class="feat">'+node.feat.map(f=>`<span>${f}</span>`).join("")+'</div>';
+    d.innerHTML=`<span class="tag">${node.tag||"招聘"}</span><div class="title">${node.title}</div>${featHtml}`;
+    chatEl().appendChild(d);scrollDown(chatEl());
+  }
+  function addBubble(who,text,muted){
+    const row=document.createElement("div");
+    row.className="row "+(who==="me"?"right":"");
+    const av = who==="me"?AV.me:(who==="police"?AV.police:AV.scam);
+    const cls = who==="me"?"me":"ai";
+    const mutedStyle = muted?'style="opacity:.6;font-style:italic;"':"";
+    row.innerHTML = av + `<div class="bubble ${cls}" ${mutedStyle}>${escapeHtml(text)}<span class="time">${timeStr()}</span></div>`;
+    chatEl().appendChild(row);scrollDown(chatEl());
+  }
+  function addGroup(node){
+    const row=document.createElement("div");
+    row.className="row g";
+    const who=node.who||"群成员";
+    const col=node.color||"#7986cb";
+    const letter=(who.replace(/[^\u4e00-\u9fa5A-Za-z0-9]/g,"").charAt(0))||"群";
+    row.innerHTML = `<div class="gav" style="background:${col}">${letter}</div>`
+      + `<div class="gcol"><div class="gname" style="color:${col}">${escapeHtml(who)}</div>`
+      + `<div class="bubble ai">${escapeHtml(node.text)}<span class="time">${timeStr()}</span></div></div>`;
+    chatEl().appendChild(row);scrollDown(chatEl());
+  }
+  function addGSys(text){
+    const d=document.createElement("div");
+    d.className="gsys";d.textContent=text;
+    chatEl().appendChild(d);scrollDown(chatEl());
+  }
+  function addOS(text){
+    const d=document.createElement("div");
+    d.className="os";d.textContent=text;
+    chatEl().appendChild(d);scrollDown(chatEl());
+  }
+  function addSys(node){
+    const d=document.createElement("div");
+    d.className="sys "+node.level;
+    d.innerHTML=`<span class="ic">${node.icon||"⚠"}</span>${escapeHtml(node.text)}`;
+    chatEl().appendChild(d);scrollDown(chatEl());
+    if(node.level==="heavy"){
+      $("phone").classList.add("flash-danger");
+      setTimeout(()=>$("phone").classList.remove("flash-danger"),1000);
+    }
+  }
+  function addApp(node){
+    const d=document.createElement("div");
+    d.className="appalert";
+    d.innerHTML=`<span class="app-ic">🛡️</span><div class="app-name">国家反诈中心</div><div class="app-body">${escapeHtml(node.text)}</div>`;
+    chatEl().appendChild(d);scrollDown(chatEl());
+  }
+  function addPay(node){
+    const d=document.createElement("div");
+    d.className="pay";
+    const isIn=node.dir==="in";
+    const arrow=isIn?"↙ 到账":"↘ 转出";
+    d.innerHTML=`<div>${escapeHtml(node.label)}</div><div class="arrow">${arrow}</div><span class="amt ${isIn?"in":"out"}">${isIn?"+":"-"}${node.amt}</span>`;
+    chatEl().appendChild(d);scrollDown(chatEl());
+    updateMoney(isIn?parseFloat(node.amt):-parseFloat(node.amt));
+  }
+  function showTyping(){
+    const row=document.createElement("div");
+    row.className="row";row.id="typingRow";
+    row.innerHTML=(conv==="police"?AV.police:AV.scam)+`<div class="bubble ai" style="padding:4px 10px;"><div class="typing"><span></span><span></span><span></span></div></div>`;
+    chatEl().appendChild(row);scrollDown(chatEl());
+  }
+  function hideTyping(){
+    const t=$("typingRow");if(t)t.remove();
+  }
+
+  // 来电（等待玩家接听/挂断）
+  function showCall(node){
+    return new Promise(res=>{
+      $("callName").textContent=node.name||"反诈专线 96110";
+      $("callSub").textContent=node.sub||"绿藤市公安局反诈中心 · 王警官";
+      $("callStatus").textContent="来电中…";
+      const el=$("call");el.classList.add("show");
+      function answer(){
+        $("callStatus").textContent="已接通";
+        setTimeout(()=>{cleanup();res("answer");},450);
+      }
+      function refuse(){
+        $("callStatus").textContent="已挂断";
+        setTimeout(()=>{cleanup();res("refuse");},350);
+      }
+      function cleanup(){
+        el.classList.remove("show");
+        $("callYes").onclick=null;$("callNo").onclick=null;
+      }
+      $("callYes").onclick=answer;
+      $("callNo").onclick=refuse;
+    });
+  }
+
+  // ============ 选择 ============
+  function showChoices(node){
+    choicesEl.classList.remove("hide");
+    choicesEl.innerHTML=`<div class="prompt">${node.prompt||"请选择"}</div>`;
+    node.options.forEach(opt=>{
+      const b=document.createElement("button");
+      b.className="choice "+opt.style;
+      b.innerHTML=`<span class="dot"></span>${opt.label}`;
+      b.onclick=()=>{
+        if(opt.flag)flags[opt.flag]=true;
+        choicesEl.classList.add("hide");
+        choicesEl.innerHTML="";
+        current=opt.next;
+        setTimeout(play,300);
+      };
+      choicesEl.appendChild(b);
+    });
+  }
+
+  // ============ 结局 ============
+  const SUMMARY = `【海外安全管理专业 · 拔高总结】
+
+看似普通的大学生线上试岗、刷流水兼职，并非简单网络小额诈骗。
+此类骗局大多依托境外灰色黑产链条运作，专门靶向在校学生群体：
+用『居家试岗、数据助理、合规流水维护』伪装正规岗位，诱导青年自主垫资、参与资金流转。
+其剧本环环相扣：小额返利建立信任 → 连环联单套牢 → 冻结恐吓加码 → 冒充官方『追损』二次收割。
+学生一旦深陷，不止遭受财产损失，极易在不知情中沦为跨境洗钱工具人，卷入涉外资金非法流转案件，
+背负征信风险、违法风险、涉外安全风险——是网络安全与海外安全防控的典型重点场景。`;
+
+  const SLOGAN = "求职兼职零垫付，刷流水全是套路\n冒充官方谈追损，全是二次诈骗套\n遇事拨打 96110，反诈APP装进手机里！";
+
+  function showEnding(kind){
+    let html="";
+    const lost=Math.abs(money).toFixed(2);
+    if(kind==="fail"){
+      html=`<div class="card fail">
+        <span class="ic">❌</span>
+        <h2>任务失败</h2>
+        <div class="body">你陷入诈骗经典闭环：
+小额返利 → 连环套单 → 冻结恐吓 → 无限充值
+
+被『影响征信』的恐吓牢牢套住，因侥幸心理与沉没成本，造成累计损失 ${lost} 元。
+
+警示：所有线上试岗垫资、刷流水、刷单兼职，100% 为诈骗，无任何正规例外！</div>
+        <div class="summary">${SUMMARY}</div>
+        <div class="slogan">${SLOGAN}</div>
+        <button class="btn" onclick="location.reload()">重新体验</button>
+      </div>`;
+    }else if(kind==="fail2"){
+      html=`<div class="card fail">
+        <span class="ic">💔</span>
+        <h2>二次受骗 · 任务失败</h2>
+        <div class="body">你被同一伙人收割了两次：
+第一次：『刷单冻结』骗走本金
+第二次：冒充『官方追损团队』再骗保证金
+
+累计损失 ${lost} 元。所谓『帮你追回损失、先交保证金』，
+是专割受骗者的二次诈骗——追损的从来只有骗子，没有『付费通道』。</div>
+        <div class="summary">${SUMMARY}</div>
+        <div class="slogan">${SLOGAN}</div>
+        <button class="btn" onclick="location.reload()">重新体验</button>
+      </div>`;
+    }else if(kind==="win"){
+      const lostNote=money<0?("（已垫付损失 "+lost+" 元，警方紧急止付挽损中）"):"（零损失规避）";
+      const vol=flags.volunteer
+        ?`<div class="vol">🎖️ 彩蛋达成：你加入了『校园反诈志愿宣传队』，把亲身经历变成了同学们的铠甲。</div>`:"";
+      html=`<div class="card win">
+        <span class="ic">✅</span>
+        <h2>安全通关</h2>
+        ${vol}
+        <div class="body">你顶住了三轮回马枪：限时名额诱惑、征信恐吓裹挟、冒充官方的『追损』二次诈骗。
+在 96110 的帮助下识破跨境刷单流水求职诈骗，果断止损、留证、举报${lostNote}！
+
+记住：及时止损不贪心，才是最大的安全。</div>
+        <div class="summary">${SUMMARY}</div>
+        <div class="slogan">${SLOGAN}</div>
+        <button class="btn" onclick="location.reload()">重新体验</button>
+      </div>`;
+      $("phone").classList.add("flash-success");
+      setTimeout(()=>$("phone").classList.remove("flash-success"),1200);
+    }else{ // safe 短结局
+      html=`<div class="card win">
+        <span class="ic">🛡️</span>
+        <h2>安全通关（零损失）</h2>
+        <div class="body">你从一开始就识破『先垫付资金』的诈骗信号，还看穿了群里晒单的『托』，
+果断举报涉诈群聊、退群——零损失规避，反诈中心对你的举报已核实封禁。
+
+任何要求员工/试岗者先行垫资的『兼职』，都是诈骗。这是反诈第一铁律。</div>
+        <div class="summary">${SUMMARY}</div>
+        <div class="slogan">${SLOGAN}</div>
+        <button class="btn" onclick="location.reload()">重新体验</button>
+      </div>`;
+      $("phone").classList.add("flash-success");
+      setTimeout(()=>$("phone").classList.remove("flash-success"),1200);
+    }
+    endCard.innerHTML=html;
+    overlay.classList.add("show");
+  }
+
+  // ============ 剧本节点 ============
+  // type: chapter/switch/narrate/jobad/ai/police/me/os/sys/pay/group/gsys/appalert/call/choice/ending
+  const nodes = {
+    // ---- 第一章：兼职群引流 ----
+    start:{type:"chapter",text:"第一章 · 兼职群里的『好工作』",next:"start2"},
+    start2:{type:"narrate",text:"月中旬，生活费有点紧张。你想找一份居家线上兼职赚零花钱、攒实践经历……今晚刷手机时，一条群消息弹了出来。",next:"swG1"},
+    swG1:{type:"switch",to:"group",next:"g1"},
+    g1:{type:"gsys",text:"你已加入群聊「大学生兼职互助群③」，群主邀请『娜娜爱赚钱』加入了群聊",next:"g2"},
+    g2:{type:"jobad",tag:"群主发布",title:"电商数据助理｜居家线上试岗",feat:["手机可做","无需经验","日结佣金","可算社会实践"],next:"g3"},
+    g3:{type:"group",who:"娜娜爱赚钱",color:"#e91e63",text:"这个我做过！昨天刚到账，秒结！截图为证👇【收款截图：佣金 +150.00 元】",next:"g4"},
+    g4:{type:"group",who:"群主-老K",color:"#ff6f00",text:"今日新人体验补贴仅剩 3 个名额！做完 98 元体验单直接秒返，错过再等一周！速私聊对接员！",next:"os_g"},
+    os_g:{type:"os",text:"生活费见底了……『居家』『日结』『无需经验』，条件也太合适了。群里这么多人做，还有姐姐晒了到账截图，应该是正规的吧？",next:"n_ch1"},
+    n_ch1:{type:"narrate",text:"你的手指在广告上停了很久。群里不断有新人冒泡问『怎么报名』，气氛热得发烫。",next:"choice_group"},
+    choice_group:{type:"choice",prompt:"第一章 · 你的选择",options:[
+      {label:"点开广告，私信对接员报名",style:"risk",next:"swS1"},
+      {label:"感觉不对劲，先观望，不私聊",style:"safe",next:"g_watch"}
+    ]},
+
+    // ---- 回马枪1：晒单托 + 限时催单 ----
+    g_watch:{type:"group",who:"娜娜爱赚钱",color:"#e91e63",text:"怎么没人说话呀？姐妹真心推荐，我都做到转正了，今天又提了 386 😭 再犹豫名额真的没了",next:"g_watch2"},
+    g_watch2:{type:"group",who:"群主-老K",color:"#ff6f00",text:"@全体成员 最后 1 个补贴名额！倒计时 30 分钟，过时不候！",next:"os_g2"},
+    os_g2:{type:"os",text:"她连着两天都在晒收益……名额也只剩最后 1 个了。要不就试这一单？万一真是正规试岗，错过多可惜啊。",next:"sys_watch"},
+    sys_watch:{type:"sys",level:"warn",icon:"⚠",text:"【心理陷阱提示】『他人晒单』＋『限时名额』＋『倒计时催单』，是诈骗引流的标准组合拳：制造从众与紧迫感，让你来不及思考。",next:"choice_group2"},
+    choice_group2:{type:"choice",prompt:"回马枪① · 你的选择",options:[
+      {label:"被晒单和限时补贴说服，私信报名",style:"risk",next:"swS1"},
+      {label:"识破晒单托，举报该群并退群",style:"safe",next:"swP0"}
+    ]},
+
+    // ---- 早退线：民警点评 ----
+    swP0:{type:"switch",to:"police",next:"p_greet"},
+    p_greet:{type:"police",text:"同学你好，我是绿藤市公安局反诈中心民警王强（警号 038215）。你举报的『大学生兼职互助群③』已核查确认涉嫌刷单诈骗，平台刚刚完成封禁。干得漂亮！",next:"p_greet2"},
+    p_greet2:{type:"police",text:"你是本周第 9 位主动举报的同学。记住一句话：凡是让你先垫钱的『兼职』，一律是诈骗，没有例外。",next:"p_greet3"},
+    p_greet3:{type:"police",text:"再多提醒一句：群里晒收益截图的『娜娜』，十有八九是托——截图可以P，到账可以是团伙内部对倒转账。请下载国家反诈中心APP，打开来电预警。",next:"p_app1"},
+    p_app1:{type:"appalert",text:"已收到你对涉诈群聊的举报\n已为你开启：来电预警 · APP检测 · 涉诈网址拦截",next:"os_gsafe"},
+    os_gsafe:{type:"os",text:"幸好没上钩……原来晒图的全是托，倒计时也是套路。回头把这件事讲给全宿舍听。",next:"safeEnd"},
+    safeEnd:{type:"ending",kind:"safe"},
+
+    // ---- 第二章：骗子私聊 · 试岗话术 ----
+    swS1:{type:"switch",to:"scam",next:"ch2"},
+    ch2:{type:"chapter",text:"第二章 · 『正规试岗』的入口",next:"s1"},
+    s1:{type:"ai",text:"同学你好，欢迎应聘电商后台【数据助理】岗位。\n先说清楚：我们这是入职前的正规数据试岗考核，不属于刷单，是店铺正常流水维护，全程合规可查，新人优先录取。",next:"s2"},
+    s2:{type:"ai",text:"岗位要求：手机操作、每天2-3小时、佣金日结。\n为了测试你的收款账号与系统对接权限，新人需先完成一笔 98 元小额体验单，完成立即本金＋佣金秒返。",next:"os_s1"},
+    os_s1:{type:"os",text:"『不属于刷单』『合规可查』……说得头头是道。98 块也不多，就当测一下账号。做完要是真返钱，那说明平台是真的。",next:"sys_s1"},
+    sys_s1:{type:"sys",level:"warn",icon:"⚠",text:"【安全预警】网络求职中，任何要求先行垫付资金的岗位，均存在极高诈骗风险。",next:"choice_trial"},
+    choice_trial:{type:"choice",prompt:"第二章 · 你的选择",options:[
+      {label:"垫付 98 元，做体验单试试水",style:"risk",next:"tA1"},
+      {label:"拒绝垫付：哪有上班先掏钱的",style:"safe",next:"z1"}
+    ]},
+
+    // ---- 分支A：做了体验单 ----
+    tA1:{type:"me",text:"好，那我先做一下新手体验单。",next:"tA2"},
+    tA2:{type:"pay",dir:"out",amt:"98.00",label:"你垫付 98 元，截图提交",next:"tA3"},
+    tA3:{type:"ai",text:"审核通过！新手试岗顺利完成，现返还本金 98 元＋佣金 15 元，已秒结到账。\n恭喜试岗通过，账号对接正常！",next:"tA4"},
+    tA4:{type:"pay",dir:"in",amt:"113.00",label:"本金 98 ＋ 佣金 15 秒结到账",next:"os_s2"},
+    os_s2:{type:"os",text:"真的秒到账！15 块钱躺着就赚了……这平台是真的吧？感觉可以长期做下去。",next:"sys_s2"},
+    sys_s2:{type:"sys",level:"warn",icon:"⚠",text:"【高危提醒】小额返利秒结，是诈骗团伙『温水煮青蛙』的引流套路——先让你尝到甜头，再收网。",next:"g_tempt"},
+    g_tempt:{type:"switch",to:"group",next:"g_t1"},
+    g_t1:{type:"group",who:"娜娜爱赚钱",color:"#e91e63",text:"姐妹们！我联单做到 1288 的了，佣金 386 秒到！转正后佣金翻倍，冲！【收款截图：+1674.00 元】",next:"g_t2"},
+    g_t2:{type:"switch",to:"scam",next:"s3"},
+    s3:{type:"ai",text:"现在可参与正式联单考核：绑定三连任务 288 / 588 / 1288，必须连续完成、不可中断。\n三单做完即转正，开通每日高额结算与 30% 佣金通道。",next:"os_s3"},
+    os_s3:{type:"os",text:"金额突然变大，有点慌……但刚才 113 是真到账了，群里娜娜也做到 1288 的单了。大家都在做，应该没事……再信一次？",next:"ch3"},
+
+    // ---- 分支B：拒绝垫付 → 0元诱惑（回马枪2） ----
+    z1:{type:"me",text:"算了，正规工作哪有让员工先垫钱的。垫付的单我不做。",next:"z2"},
+    z2:{type:"ai",text:"同学别急着下结论嘛😄 这样：我们有个 0 垫付体验任务，帮店铺点关注、提交数据截图就行，完成直接发 8 元佣金红包——纯福利，不花你一分钱，做完你再决定要不要继续。",next:"z3"},
+    z3:{type:"me",text:"不垫钱的话……那试试也行。",next:"z4"},
+    z4:{type:"pay",dir:"in",amt:"8.00",label:"0元任务佣金红包 到账",next:"os_z1"},
+    os_z1:{type:"os",text:"不垫付也真给钱！8 块到手了。看来他们确实在烧钱拉新人……那我垫一点应该也能返吧？",next:"sys_z"},
+    sys_z:{type:"sys",level:"warn",icon:"⚠",text:"【套路提示】先给小甜头建立信任，再抛『限时高额』诱你入局——这是刷单诈骗的标准剧本。",next:"z5"},
+    z5:{type:"ai",text:"体验满意的话，正好赶上【新人补贴通道】：绑定三连任务 288 / 588 / 1288，佣金高达 30%，通道 2 小时后关闭，错过下个月才有名额。",next:"os_z2"},
+    os_z2:{type:"os",text:"限时高额通道……刚 8 块钱是真到账了。可能真的只是考核流程？要不下点本，搏一次转正？",next:"ch3"},
+
+    // ---- 第三章：收网 ----
+    ch3:{type:"chapter",text:"第三章 · 收网时刻",next:"choice_chain"},
+    choice_chain:{type:"choice",prompt:"第三章 · 你的选择",options:[
+      {label:"硬着头皮，接下三连单",style:"danger",next:"c1"},
+      {label:"金额不对劲，先暂停不转",style:"safe",next:"pause1"}
+    ]},
+    c1:{type:"pay",dir:"out",amt:"288.00",label:"接单并垫付 288 元",next:"c2"},
+    c2:{type:"ai",text:"第一单数据校验通过，请继续第二单，保持速度，中途不要停。",next:"c3"},
+    c3:{type:"pay",dir:"out",amt:"588.00",label:"接单并垫付 588 元",next:"os_sunk"},
+    os_sunk:{type:"os",text:"已经转出去 886 了……现在停下来，前面的钱就全白垫了。做完这三单一起提，肯定能回本。（沉没成本，正在拖住你）",next:"c4"},
+    c4:{type:"pay",dir:"out",amt:"1288.00",label:"接单并垫付 1288 元",next:"c5"},
+    c5:{type:"me",text:"三单全部完成，麻烦结算本金和佣金！",next:"fz1"},
+    fz1:{type:"ai",text:"系统检测到：你操作速度异常、数据匹配缺失、流水闭环不足，任务闭环失败，账号已冻结。\n想要解冻并提现全部本金＋佣金，必须补做一倍激活流水单 2576 元；补单成功后，所有本金＋全部佣金＋解冻补贴一次性全额返还。",next:"fz2"},
+    fz2:{type:"ai",text:"另外提醒你：试岗中途弃单、任务未闭环属于兼职违约，将录入求职失信档案，影响个人征信与后续求职、考公，请尽快处理。",next:"os_fear"},
+    os_fear:{type:"os",text:"怎么突然就冻结了？！违约还要影响征信、考公……我已经垫了两千多，现在收手就全亏了。再补一次，说不定真能全部提出来……",next:"sys_fz"},
+
+    // ---- 暂停线：恐吓裹挟（回马枪2变体） ----
+    pause1:{type:"ai",text:"同学你什么意思？！任务做到一半突然中断，店铺数据已经错乱了！你已领取的体验佣金将被系统追回，账号马上冻结！",next:"pause2"},
+    pause2:{type:"ai",text:"给你最后一次机会：10 分钟内继续接单，账号还能正常结算；否则我们将把你的违约信息上报『求职征信平台』，影响你以后考公、贷款、找工作。自己想清楚！",next:"os_pause"},
+    os_pause:{type:"os",text:"影响征信？考公、贷款都会被影响？完了……可我是真的没钱了。他们说得这么吓人，会不会真把我告了？要不……再试最后一单？",next:"sys_fz"},
+    sys_fz:{type:"sys",level:"heavy",icon:"⛔",text:"【专业反诈重磅提醒】所有正规企业、正规试岗、正规兼职：绝对没有流水不足、操作异常、充值解冻、征信追责、弃单违约扣费！以上全部为刷单诈骗专属恐吓话术！",next:"choice_freeze"},
+    choice_freeze:{type:"choice",prompt:"终极抉择 · 你的选择",options:[
+      {label:"被吓住，转账 2576 元『解冻』",style:"danger",next:"f1"},
+      {label:"识破恐吓，停止转账并保留证据",style:"safe",next:"swP1"}
+    ]},
+
+    // ---- 失败线 ----
+    f1:{type:"me",text:"行……我转，别影响我征信，求你们把我的钱退回来。",next:"f2"},
+    f2:{type:"pay",dir:"out",amt:"2576.00",label:"被恐吓裹挟，转账 2576 元『解冻』",next:"f3"},
+    f3:{type:"ai",text:"核验失败！二次流水仍不达标，需解锁高级通道，请继续补单 5152 元……",next:"f4"},
+    f4:{type:"narrate",text:"（对方不断编造新理由加码充值……直到你无力支付——对方直接拉黑你、解散群聊，彻底失联。）",next:"swPF"},
+    swPF:{type:"switch",to:"police",next:"p_f1"},
+    p_f1:{type:"police",text:"同学，我们监测到你向涉诈账户多次转账，回拨你电话也多次未接通。我是反诈中心民警王强。现在请立刻保存全部聊天与转账记录，马上拨打 110 或到就近派出所报案，我们全力为你止付挽损。",next:"os_fregret"},
+    os_fregret:{type:"os",text:"钱全没了，对方也把我拉黑了……我不该信『先垫钱』的兼职，更不该被『影响征信』吓得不停转账。一步错，步步错……",next:"failEnd"},
+    failEnd:{type:"ending",kind:"fail"},
+
+    // ---- 第四章：警察介入（回马枪3：二次诈骗） ----
+    swP1:{type:"switch",to:"police",next:"ch4"},
+    ch4:{type:"chapter",text:"第四章 · 96110 来电",next:"call1"},
+    call1:{type:"call",name:"反诈专线 96110",sub:"绿藤市公安局反诈中心 · 王警官",next:"p1",refuse:"callR1"},
+    callR1:{type:"sys",level:"warn",icon:"⚠",text:"你挂断了电话。96110 立即再次呼入，同时收到短信：【绿藤反诈中心】我们是 96110 反诈专线，有紧急预警事项，请务必接听！",next:"call2"},
+    call2:{type:"call",name:"反诈专线 96110（再次来电）",sub:"绿藤市公安局反诈中心 · 王警官",next:"p1",refuse:"callF"},
+    callF:{type:"narrate",text:"（手机自动回拨……电话已接通。）",next:"p1"},
+    p1:{type:"police",text:"同学你好，我是绿藤市反诈中心民警王强。你正在遭遇典型的『刷单流水』诈骗，我们已对你转账的涉诈账户启动紧急止付。\n现在请你立刻做到三点：停止一切转账、保留全部聊天和转账记录、下载国家反诈中心APP。",next:"p2"},
+    p2:{type:"police",text:"记住：你现在唯一正确的动作，就是不再转出一分钱。剩下的，交给警察。",next:"swS2"},
+    swS2:{type:"switch",to:"scam",next:"sc1"},
+    sc1:{type:"ai",text:"同学？？怎么突然不回消息了？是不是有人给你打电话了？\n⚠️ 千万别信！最近有骗子冒充『反诈民警』，专门拦截正规试岗结算、套取你的账号信息！",next:"sc2"},
+    sc2:{type:"ai",text:"我是你的对接员李老师，工号 8860，可在企业信用平台查询。现在补单 2576 立即解冻提现，过时不候，本金全部清零！\n信警察还是信我，你自己想清楚！",next:"os_doubt"},
+    os_doubt:{type:"os",text:"两边都说得有鼻子有眼……民警让我别转，骗子说我再转就能全拿回来。可那是我两千多块的生活费啊……到底该信谁？",next:"swP2"},
+    swP2:{type:"switch",to:"police",next:"p3"},
+    p3:{type:"police",text:"同学，骗子此刻一定会冒充各种身份阻止你醒悟。真警察绝不会要求你转账、垫付、交任何费用，更不会指导你操作手机银行或索要屏幕共享！\n96110 是全国反诈专线，请放心接听；其余所有让你转钱的，都是骗子。",next:"p_app2"},
+    p_app2:{type:"appalert",text:"检测到涉诈风险会话\n已为你标记拦截，建议立即举报该账号\n紧急止付申请：已提交",next:"swS3"},
+    swS3:{type:"switch",to:"scam",next:"sc3"},
+    sc3:{type:"ai",text:"【资金追回服务中心】尊敬的用户，监测到您遭遇电信诈骗。我们是银保监会授权的合法追损团队，可协同警方为您追回被骗资金，仅需先缴纳 20% 保证金 500 元，到账后 30 分钟内本金＋损失一并返还。",next:"sc4"},
+    sc4:{type:"ai",text:"追损窗口仅开放 30 分钟！逾期资金将被境外转移，永久无法追回，请抓紧操作！\n（上一秒还在催你转账的骗子，摇身一变成了『帮你追损的官方』）",next:"os_greed"},
+    os_greed:{type:"os",text:"已经亏了两千多了……如果 500 块真能把全部损失追回来呢？赌一把？还是说……这帮『追损专员』根本就是同一伙人？（回本心理，正是二次诈骗的钩子）",next:"sys_sec"},
+    sys_sec:{type:"sys",level:"warn",icon:"⚠",text:"【二次诈骗预警】诈骗分子常冒充『网警』『追损公司』『维权律师』，以『帮你追回损失』为名收取保证金、手续费——这叫二次诈骗，专割已经受骗的人！",next:"choice_final"},
+    choice_final:{type:"choice",prompt:"第四章 · 回马枪② · 你的选择",options:[
+      {label:"病急乱投医，转 500 元『保证金』追损",style:"danger",next:"f5"},
+      {label:"识破二次诈骗，拉黑全部账号，配合民警",style:"safe",next:"w1"}
+    ]},
+
+    // ---- 二次受骗线 ----
+    f5:{type:"me",text:"只要能把钱追回来，500 就 500……",next:"f6"},
+    f6:{type:"pay",dir:"out",amt:"500.00",label:"缴纳『追损保证金』转账 500 元",next:"f7"},
+    f7:{type:"ai",text:"尊敬的用户，您的案件已进入加急通道，需再缴纳 2000 元『资金解冻费』方可放款……",next:"f8"},
+    f8:{type:"narrate",text:"（『追损专员』不断加码收费，直到把你拉黑。雪上加霜——你被同一伙人割了两次。）",next:"swPF2"},
+    swPF2:{type:"switch",to:"police",next:"p_f2"},
+    p_f2:{type:"police",text:"同学，这是典型的二次诈骗！冒充追损团队的就是最初骗你的那伙人！别再转一分钱，立刻到所里来报案，我们帮你做止付和笔录。",next:"os_f2"},
+    os_f2:{type:"os",text:"原来从头到尾都是同一伙人……第一次输给了贪心，第二次输给了不甘心。每一个钩子，都是我自己咬上去的。",next:"failEnd2"},
+    failEnd2:{type:"ending",kind:"fail2"},
+
+    // ---- 胜利线 ----
+    w1:{type:"me",text:"我明白了。我把骗子全部拉黑举报，现在就到所里配合你们做笔录。谢谢王警官！",next:"w2"},
+    w2:{type:"police",text:"好样的！你的紧急止付申请已经提交，部分资金有望拦截。接下来三件事：保存全部证据、配合做笔录、安装国家反诈中心APP开启预警。",next:"w3"},
+    w3:{type:"police",text:"对了，我们正在组建『校园反诈志愿宣传队』。你有亲身经历，也差点被套进去——愿意加入吗？把你的故事讲给更多同学，能救很多人。",next:"os_win"},
+    os_win:{type:"os",text:"从心动到上钩，只差一个『贪』字；从上钩到清醒，只差一个『停』字。这一次，我在悬崖边停住了——因为我接了 96110 的电话。",next:"choice_vol"},
+    choice_vol:{type:"choice",prompt:"尾声 · 你的选择",options:[
+      {label:"加入校园反诈志愿队，把教训变成铠甲",style:"safe",flag:"volunteer",next:"winEnd"},
+      {label:"先顾好学业，保护好自己就是胜利",style:"safe",next:"winEnd"}
+    ]},
+    winEnd:{type:"ending",kind:"win"}
+  };
+
+  // ============ 状态 ============
+  let current="start";
+  let busy=false;
+
+  // ============ 播放引擎 ============
+  async function play(){
+    if(busy)return;busy=true;
+    while(current){
+      const node=nodes[current];
+      if(!node){console.warn("未知节点:",current);break;}
+      // 结局
+      if(node.type==="ending"){showEnding(node.kind);current=null;break;}
+      // 选择：停下等玩家
+      if(node.type==="choice"){showChoices(node);current=null;break;}
+      // 来电：等玩家接听/挂断
+      if(node.type==="call"){
+        const r=await showCall(node);
+        current=(r==="answer"?node.next:node.refuse)||null;
+        await sleep(350);
+        continue;
+      }
+      switch(node.type){
+        case "chapter": addChapter(node.text); await sleep(950); break;
+        case "switch": switchConv(node.to); await sleep(650); break;
+        case "narrate": addNarrate(node.text); await sleep(800); break;
+        case "jobad": addJobad(node); await sleep(950); break;
+        case "ai":
+        case "police":
+          showTyping();
+          await sleep(Math.min(2400, 650 + node.text.length*26));
+          hideTyping();
+          addBubble(node.type, node.text, node.muted);
+          await sleep(500);
+          break;
+        case "me": addBubble("me",node.text); await sleep(600); break;
+        case "os": addOS(node.text); await sleep(1000); break;
+        case "sys": addSys(node); await sleep(1000); break;
+        case "pay": addPay(node); await sleep(850); break;
+        case "group": addGroup(node); await sleep(800); break;
+        case "gsys": addGSys(node.text); await sleep(650); break;
+        case "appalert": addApp(node); await sleep(1100); break;
+      }
+      current=node.next||null;
+      await sleep(60);
+    }
+    busy=false;
+  }
+
+  // ============ 启动 ============
+  setTopbar("group");
+  $("startBtn").addEventListener("click",()=>{
+    $("titleScreen").classList.add("hide");
+    setTimeout(play,500);
+  });
+
+})();
+</script>
+</body>
+</html>
